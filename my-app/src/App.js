@@ -121,26 +121,15 @@
 //   )
 // }
 
-// import React from "react";
-// import Zinute from "./Zinute";
-
-// function App() {
-//   return (
-//     <div>
-//       <Zinute />
-//     </div>
-//   );
-// }
-
-// export default App;
-
 import React from "react";
 import Skaiciuoklis from "./Skaiciuoklis";
+import Zinute from "./Zinute";
 
 function App() {
   return (
     <div>
       <Skaiciuoklis />
+      <Zinute />
     </div>
   );
 }

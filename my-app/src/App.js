@@ -121,17 +121,60 @@
 //   )
 // }
 
-import React from "react";
-import Skaiciuoklis from "./Skaiciuoklis";
-import Zinute from "./Zinute";
+// --------------------------------- UZDUOTYS 1 IR 2 --------------------------------
 
-function App() {
+// import React from "react";
+// import Skaiciuoklis from "./Skaiciuoklis";
+// import Zinute from "./Zinute";
+
+// function App() {
+//   return (
+//     <div>
+//       <Skaiciuoklis />
+//       <Zinute />
+//     </div>
+//   );
+// }
+
+// export default App;
+
+// --------------------------------------------------------------------------------------
+
+import React, { useEffect, useState } from "react";
+
+function Produktai() {
+  const [produktai, setProduktai] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:5000/api/produktai")
+      .then((response) => response.json())
+      .then((data) => setProduktai(data))
+      .catch((error) => console.error("⚠️ Klaida gaunant duomenis:", error));
+  }, []);
+
   return (
     <div>
-      <Skaiciuoklis />
-      <Zinute />
+      <h2>Produktų sąrašas</h2>
+      <table border="1">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Produkto pavadinimas</th>
+            <th>Kaina (€)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {produktai.map((produktas) => (
+            <tr key={produktas.id}>
+              <td>{produktas.id}</td>
+              <td>{produktas.produkto_pavadinimas}</td>
+              <td>{produktas.kaina.toFixed(2)}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
 
-export default App;
+export default Produktai;

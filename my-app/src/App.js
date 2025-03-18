@@ -1,3 +1,26 @@
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Home from "./Home";
+import About from "./About";
+import UserProfile from "./UserProfile";
+import NotFound from "./NotFound";
+import Navbar from "./Navbar";
+
+function App() {
+  return (
+    <Router>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/user/:id" element={<UserProfile />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </Router>
+  );
+}
+
+export default App;
+
 // Example 3
 // import { BrowserRouter, Routes, Route, useParams, Link } from 'react-router-dom'
 

@@ -1,106 +1,78 @@
 import React, { useState, useEffect } from "react";
 
-const API_URL = "http://127.0.0.1:5000/tasks";
+const App = () => {
+  const [books, setBooks] = useState([]);
+  const [newBook, setNewBook] = useState({ title: "", author: "", year: "" });
 
-function App() {
-  const [tasks, setTasks] = useState([]);
-  const [newTask, setNewTask] = useState("");
-
+  // Įkelti knygas iš serverio
   useEffect(() => {
-    fetchTasks();
+    fetch("http://localhost:5000/books")
+      .then((response) => response.json())
+      .then((data) => setBooks(data))
+      .catch((error) => console.error("Klaida įkeliant knygas:", error));
   }, []);
 
-  const fetchTasks = async () => {
-    try {
-      const response = await fetch(API_URL);
-      const data = await response.json();
-
-      setTasks(data);
-    } catch (error) {
-      console.log("klaida gaunant duomenis", error);
-    }
+  const addBook = () => {
+    fetch("http://localhost:5000/books", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newBook),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setBooks([...books, data]);
+        setNewBook({ title: "", author: "", year: "" });
+      })
+      .catch((error) => console.error("Klaida pridedant knygą:", error));
   };
 
-  const addTask = async () => {
-    if (newTask.trim()) {
-      try {
-        const response = await fetch(API_URL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ title: newTask }),
-        });
-
-        if (response.ok) {
-          const newTaskData = await response.json();
-          setTasks([...tasks, newTaskData]);
-          setNewTask("");
-        }
-      } catch (error) {
-        console.log("Klaida pridedant uzduoti", error);
-      }
-    }
-  };
-
-  const toggleTask = async (id, completed) => {
-    try {
-      const response = await fetch(`${API_URL}/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ completed: !completed }),
-      });
-
-      if (response.ok) {
-        fetchTasks();
-      }
-    } catch (error) {
-      console.log("Klaida atnaujinant uzduoti", error);
-    }
-  };
-
-  const deleteTask = async (id) => {
-    try {
-      const response = await fetch(`${API_URL}/${id}`, {
-        method: "DELETE",
-      });
-
-      if (response.ok) {
-        setTasks(tasks.filter((task) => task.id !== id));
-      }
-    } catch (error) {
-      console.log("Klaida trinant uzduoti", error);
-    }
+  const deleteBook = (id) => {
+    fetch(`http://localhost:5000/books/${id}`, { method: "DELETE" })
+      .then(() => setBooks(books.filter((book) => book.id !== id)))
+      .catch((error) => console.error("Klaida trinant knygą:", error));
   };
 
   return (
-    <div>
-      <h1>Uzduociu sarasas</h1>
-      <div>
+    <div className="app-container">
+      <h1 className="futuristic-title">Knygų Pasaulis</h1>{" "}
+      <div className="book-list">
+        {books.map((book) => (
+          <div className="book-item" key={book.id}>
+            <p>
+              {book.title} - {book.author} ({book.year})
+            </p>
+            <button className="delete-btn" onClick={() => deleteBook(book.id)}>
+              Ištrinti
+            </button>
+          </div>
+        ))}
+      </div>
+      <div className="add-book-form">
+        <h2>Pridėti naują knygą</h2>
         <input
           type="text"
-          value={newTask}
-          onChange={(e) => setNewTask(e.target.value)}
-          placeholder="Iveskite nauja uzduoti..."
+          placeholder="Pavadinimas"
+          value={newBook.title}
+          onChange={(e) => setNewBook({ ...newBook, title: e.target.value })}
         />
-        <button onClick={addTask}>Prideti</button>
+        <input
+          type="text"
+          placeholder="Autorius"
+          value={newBook.author}
+          onChange={(e) => setNewBook({ ...newBook, author: e.target.value })}
+        />
+        <input
+          type="number"
+          placeholder="Metai"
+          value={newBook.year}
+          onChange={(e) => setNewBook({ ...newBook, year: e.target.value })}
+        />
+        <button onClick={addBook} className="add-btn">
+          Pridėti knygą
+        </button>
       </div>
-      <ul>
-        {tasks.map((task) => (
-          <li key={task.id}>
-            <span
-              onClick={() => toggleTask(task.id, task.completed)}
-              style={{
-                textDecoration: task.completed ? "line-through" : "none",
-                cursor: "pointer",
-              }}
-            >
-              {task.title}
-            </span>
-            <button onClick={() => deleteTask(task.id)}>Istrinti</button>
-          </li>
-        ))}
-      </ul>
     </div>
   );
-}
+};
 
 export default App;

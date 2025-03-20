@@ -1,25 +1,25 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from "./Home";
-import About from "./About";
-import UserProfile from "./UserProfile";
-import NotFound from "./NotFound";
-import Navbar from "./Navbar";
+// import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+// import Home from "./Home";
+// import About from "./About";
+// import UserProfile from "./UserProfile";
+// import NotFound from "./NotFound";
+// import Navbar from "./Navbar";
 
-function App() {
-  return (
-    <Router>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/user/:id" element={<UserProfile />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </Router>
-  );
-}
+// function App() {
+//   return (
+//     <Router>
+//       <Navbar />
+//       <Routes>
+//         <Route path="/" element={<Home />} />
+//         <Route path="/about" element={<About />} />
+//         <Route path="/user/:id" element={<UserProfile />} />
+//         <Route path="*" element={<NotFound />} />
+//       </Routes>
+//     </Router>
+//   );
+// }
 
-export default App;
+// export default App;
 
 // Example 3
 // import { BrowserRouter, Routes, Route, useParams, Link } from 'react-router-dom'
@@ -158,3 +158,21 @@ export default App;
 // }
 
 // export default App
+
+import React from "react";
+import { LanguageProvider } from "./context/LanguageContext";
+import Greeting from "./components/Greeting";
+import LanguageSelector from "./components/LanguageSelector";
+
+function App() {
+  return (
+    <LanguageProvider>
+      <div style={{ textAlign: "center", padding: "20px" }}>
+        <Greeting />
+        <LanguageSelector />
+      </div>
+    </LanguageProvider>
+  );
+}
+
+export default App;

@@ -159,20 +159,61 @@
 
 // export default App
 
-import React from "react";
-import { LanguageProvider } from "./context/LanguageContext";
-import Greeting from "./components/Greeting";
-import LanguageSelector from "./components/LanguageSelector";
+// //  -----------------------------------------  38 day, 1st example -----------------------------------------------
+// import React from "react";
+// import { LanguageProvider } from "./context/LanguageContext";
+// import Greeting from "./components/Greeting";
+// import LanguageSelector from "./components/LanguageSelector";
 
-function App() {
+// function App() {
+//   return (
+//     <LanguageProvider>
+//       <div style={{ textAlign: "center", padding: "20px" }}>
+//         <Greeting />
+//         <LanguageSelector />
+//       </div>
+//     </LanguageProvider>
+//   );
+// }
+
+// export default App;
+// // -----------------------------------------------------------------------------------------------------------
+
+// --------------------------------  UZDUOTIS 1 -----------------------------------
+
+import React, { useContext } from "react";
+import ThemeDisplay from "./components/ThemeDisplay";
+import UserProfile from "./components/UserProfile";
+import LoginButton from "./components/LoginButton";
+import { ThemeProvider } from "./context/ThemeContext";
+import { UserProvider } from "./context/UserContext";
+import { AuthProvider, AuthContext } from "./context/AuthContext";
+import ErrorBoundary from "./ErrorBoundary";
+
+const App = () => {
+  // Naudojame AuthContext, kad gautume vartotojo informaciją
+  const { user } = useContext(AuthContext) || {}; // Naudojame default {} jeigu kontekstas yra undefined
+
+  console.log("User from AuthContext:", user); // Patikrinimui, ką gauname iš AuthContext
+
   return (
-    <LanguageProvider>
-      <div style={{ textAlign: "center", padding: "20px" }}>
-        <Greeting />
-        <LanguageSelector />
-      </div>
-    </LanguageProvider>
+    <ErrorBoundary>
+      <AuthProvider>
+        <ThemeProvider>
+          <UserProvider user={user}>
+            {" "}
+            {/* UserProvider gauna user iš AuthContext */}
+            <div>
+              <h1>React Context Demonstracija</h1>
+              <ThemeDisplay />
+              <UserProfile />
+              <LoginButton />
+            </div>
+          </UserProvider>
+        </ThemeProvider>
+      </AuthProvider>
+    </ErrorBoundary>
   );
-}
+};
 
 export default App;

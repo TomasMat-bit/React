@@ -181,39 +181,56 @@
 
 // --------------------------------  UZDUOTIS 1 -----------------------------------
 
-import React, { useContext } from "react";
-import ThemeDisplay from "./components/ThemeDisplay";
-import UserProfile from "./components/UserProfile";
-import LoginButton from "./components/LoginButton";
-import { ThemeProvider } from "./context/ThemeContext";
-import { UserProvider } from "./context/UserContext";
-import { AuthProvider, AuthContext } from "./context/AuthContext";
-import ErrorBoundary from "./ErrorBoundary";
+// import React, { useContext } from "react";
+// import ThemeDisplay from "./components/ThemeDisplay";
+// import UserProfile from "./components/UserProfile";
+// import LoginButton from "./components/LoginButton";
+// import { ThemeProvider } from "./context/ThemeContext";
+// import { UserProvider } from "./context/UserContext";
+// import { AuthProvider, AuthContext } from "./context/AuthContext";
+// import ErrorBoundary from "./ErrorBoundary";
 
-const App = () => {
-  // Naudojame AuthContext, kad gautume vartotojo informaciją
-  const { user } = useContext(AuthContext) || {}; // Naudojame default {} jeigu kontekstas yra undefined
+// const App = () => {
+//   // Naudojame AuthContext, kad gautume vartotojo informaciją
+//   const { user } = useContext(AuthContext) || {}; // Naudojame default {} jeigu kontekstas yra undefined
 
-  console.log("User from AuthContext:", user); // Patikrinimui, ką gauname iš AuthContext
+//   console.log("User from AuthContext:", user); // Patikrinimui, ką gauname iš AuthContext
 
+//   return (
+//     <ErrorBoundary>
+//       <AuthProvider>
+//         <ThemeProvider>
+//           <UserProvider user={user}>
+//             {" "}
+//             {/* UserProvider gauna user iš AuthContext */}
+//             <div>
+//               <h1>React Context Demonstracija</h1>
+//               <ThemeDisplay />
+//               <UserProfile />
+//               <LoginButton />
+//             </div>
+//           </UserProvider>
+//         </ThemeProvider>
+//       </AuthProvider>
+//     </ErrorBoundary>
+//   );
+// };
+
+// export default App;
+
+// // -----------------------------------------------------------------------------------------------------------
+
+// --------------------------------  TEORIJA -----------------------------
+
+import React from "react";
+import AnimatedBox from "./components/AnimatedBox";
+
+function App() {
   return (
-    <ErrorBoundary>
-      <AuthProvider>
-        <ThemeProvider>
-          <UserProvider user={user}>
-            {" "}
-            {/* UserProvider gauna user iš AuthContext */}
-            <div>
-              <h1>React Context Demonstracija</h1>
-              <ThemeDisplay />
-              <UserProfile />
-              <LoginButton />
-            </div>
-          </UserProvider>
-        </ThemeProvider>
-      </AuthProvider>
-    </ErrorBoundary>
+    <div style={{ display: "flex", justifyContent: "center", padding: "50px" }}>
+      <AnimatedBox />
+    </div>
   );
-};
+}
 
 export default App;
